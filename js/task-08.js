@@ -1,24 +1,19 @@
-function submitForm(event) {
-  event.preventDefault(); // Зупиняємо стандартну відправку форми, щоб сторінка не перезавантажувалася
+const loginForm = document.querySelector('.login-form');
 
-  const form = event.target; // Отримуємо форму
-  const elements = form.elements; // Отримуємо всі елементи форми
+loginForm.addEventListener('submit', function (event) {
+  event.preventDefault(); // Забороняємо перезавантаження сторінки при відправленні форми
 
-  let formData = {}; // Об'єкт для зберігання даних з форми
+  const formData = new FormData(loginForm);
+  const userData = {};
 
-  // Перебираємо всі елементи форми
-  for (let i = 0; i < elements.length; i++) {
-    const element = elements[i];
-    if (element.type !== "submit") {
-      formData[element.name] = element.value; // Додаємо значення елементів до об'єкта formData
-    }
-  }
+  formData.forEach((value, key) => {
+    userData[key] = value;
+  });
 
-  // Перевіряємо, чи всі поля заповнені
-  if (Object.values(formData).every(value => value.trim() !== "")) {
-    console.log(formData); // Виводимо об'єкт із введеними даними в консоль
-    form.reset(); // Очищаємо значення полів форми
+  if (!userData.email || !userData.password) {
+    alert('Будь ласка, заповніть всі поля форми.');
   } else {
-    alert("Усі поля повинні бути заповнені!"); // Попередження про незаповнені поля
+    console.log('Дані з форми:', userData);
+    loginForm.reset(); // Очищаємо значення полів форми
   }
-}
+});
